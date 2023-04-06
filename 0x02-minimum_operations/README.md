@@ -6,9 +6,9 @@ In a text file, there is a single character H. Your text editor can execute only
 - If `n` is impossible to achieve, return 0
 
 ### **Example:**
-`n = 9`
-`H`=>`Copy All`=>`Paste`=>`HH`=>`Paste`=>`HHH`=>`Copy All`=>`Paste`=>`HHHHHH`=>`Paste`=>`HHHHHHHHH`
-Number of operations: `6`
+1. `n = 9`
+2. `H`=>`Copy All`=>`Paste`=>`HH`=>`Paste`=>`HHH`=>`Copy All`=>`Paste`=>`HHHHHH`=>`Paste`=>`HHHHHHHHH`
+3. Number of operations: `6`
 
 ## Concept
 Imagine you have a text file that contains only one letter, the letter H. You can perform two actions in this file: Copy All and Paste.
