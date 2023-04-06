@@ -8,7 +8,7 @@ def minOperations(n):
     needed to result in exactly n H characters
     in the file
         Returns:
-            Integer - if n is impossible to acheive,
+            Integer: if n is impossible to acheive,
             return 0
     """
     
