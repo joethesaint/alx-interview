@@ -27,7 +27,6 @@ def minOperations(x):  # x is the number
         idx += 1
     return res
 
-
     # paste_chars = 1  # how many characters are in the file
     # clipboard = 0  # how many H's are copied
     # count_ops = 0  # counts the number of operations
