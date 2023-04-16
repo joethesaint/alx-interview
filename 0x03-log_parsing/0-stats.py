@@ -4,10 +4,15 @@ Script that reads stdin line by line and computes metrics:
 Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status
                 code> <file size>
 """
-
+import re
 import sys
-code = {"200": 0, "301": 0, "400": 0, "401": 0,
-        "403": 0, "404": 0, "405": 0, "500": 0}
+import traceback
+db = {}
+pattern = r"^((\d+(\.\d+){3})|\w+?)\s?\-\s?" +\
+    r"(\[\d+(\-\d+){2}\s\d+(\:\d+\.?(\d+)?)" +\
+    r"{2}\])\s(\"GET \/projects\/260 HTTP\/1.1\")" +\
+    r"\s(\w+)\s(\d+)$"
+code = [200, 301, 400, 401, 403, 404, 405, 500]
 sum = 0
 
 
@@ -17,34 +22,40 @@ def print_stats():
     """
     global sum
 
-    print('File size: {}'.format(sum))
-    stcdor = sorted(code.keys())
-    for each in stcdor:
-        if code[each] > 0:
-            print('{}: {}'.format(each, code[each]))
+    print("File size: {}".format(sum))
+    stcdor = sorted(db.items())
+    for key, value in stcdor:
+        print("{}: {:d}".format(key, value))
 
 
 if __name__ == "__main__":
-    cnt = 0
+    count = 0
     try:
-        """ Iterate the standard input """
         for data in sys.stdin:
-            try:
-                fact = data.split(' ')
-                """ If there is a status code """
-                if fact[-2] in code:
-                    code[fact[-2]] += 1
-                """ If there is a length """
-                sum += int(fact[-1])
-            except Exception:
-                pass
-            """ Printing control """
-            cnt += 1
-            if cnt == 10:
+            count += 1
+            log = data.rstrip()
+            matches = re.findall(pattern, log)
+            size = 0
+
+            if matches is not None and len(matches) > 0:
+                matches = list(matches[0])
+                size = int(matches[-1])
+                try:
+                    status = int(matches[-2])
+
+                    if status in code:
+                        if db.get(status) is None:
+                            db[status] = 0
+                        db[status] += 1
+                except ValueError:
+                    pass
+                sum += int(size)
+
+            if count == 10:
                 print_stats()
-                cnt = 0
+                count = 0
     except KeyboardInterrupt:
         print_stats()
-        raise
+        traceback.print_exc()
     else:
         print_stats()
