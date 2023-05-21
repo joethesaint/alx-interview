@@ -8,7 +8,7 @@ def makeChange(coins, total):
     """
     Classic Bottom-Up dynamic program
     """
-    temp_val = 0 #temporary value
+    temp_val = 0  # temporary value
     coins.sort(reverse=True)
 
     if total < 0:
